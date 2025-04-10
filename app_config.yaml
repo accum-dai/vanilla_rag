@@ -1,0 +1,61 @@
+# RAG系统配置
+
+# 生成器设置
+generator:
+  # 默认生成器类型: ollama 或 openai
+  default_type: "ollama"
+  
+  # Ollama设置
+  ollama:
+    api_url: "http://127.0.0.1:11434/api/generate"
+    default_model: "qwen:32b"
+    streaming: true
+    # 注意: 如果需要API密钥，请在.env中添加 OLLAMA_API_KEY
+  
+  # OpenAI设置（未来使用）
+  openai:
+    api_url: "https://api.openai.com/v1/chat/completions"
+    default_model: "gpt-3.5-turbo"
+    temperature: 0.7
+    max_tokens: 1000
+    streaming: true
+    # 注意: API密钥应在.env中添加为 OPENAI_API_KEY
+
+# 向量存储设置
+vector_store:
+  persist_dir: "./chroma_db"
+  default_collection: "wiki_knowledge_base"
+
+# 嵌入模型设置
+embedding:
+  default_provider: "sentence_transformer"
+  
+  # SentenceTransformer配置
+  sentence_transformer:
+    model_name: "paraphrase-multilingual-MiniLM-L12-v2"
+    batch_size: 32
+    # 如果为null，则自动检测GPU
+    device: null
+  
+  # OpenAI Embeddings配置（未来使用）
+  openai:
+    model_name: "text-embedding-ada-002"
+    # 注意: API密钥应在.env中添加为 OPENAI_API_KEY
+
+# 文本分割器设置
+text_splitter:
+  chunk_size: 500
+  overlap: 50
+
+# RAG设置
+rag:
+  top_k: 5
+  prompt_template: |
+    你是一个知识丰富的AI助手。请使用以下检索到的相关信息来回答用户问题。如果检索到的信息不足以回答问题，请说明你不知道。
+
+    相关信息:
+    {context}
+
+    用户问题: {query}
+
+    请提供准确、全面的回答。如果你使用了包含URL的文档，请在回答中引用这些来源，格式为[文档标题](URL)。
