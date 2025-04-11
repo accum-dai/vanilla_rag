@@ -46,9 +46,6 @@ pip install -r requirements.txt
 3. 准备配置文件：
 
 ```bash
-# 复制配置模板
-cp app_config.yaml.example app_config.yaml
-cp .env.example .env
 
 # 创建数据源目录
 mkdir -p data_sources
